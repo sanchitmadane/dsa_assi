@@ -1,0 +1,605 @@
+package class_work;
+
+public class BinaryTree {
+
+	private BTNode root;
+	
+	public BinaryTree()
+	{
+		root = null;
+	}
+	
+	public void setRoot(BTNode r)
+	{
+		root = r;
+	}
+	
+	public BTNode getRoot()
+	{
+		return root;
+	}
+	
+	public BTNode createNode(int d)
+	{
+		return new BTNode(d);
+	}
+
+	public void insert_levelwise(int d)
+	{
+		BTNode new_node = new BTNode(d);
+		
+		if(root == null)
+		{
+			root = new_node;
+			return;
+		}
+		
+		BTNodeQueue q = new BTNodeQueue(25); //
+		BTNode iter = root;
+		q.insert(iter);
+		while(!q.isEmpty())
+		{
+			iter = q.del();
+			if(iter.getLeft() == null)
+			{
+				iter.setLeft(new_node);
+				return;
+			}
+			else
+			{
+				q.insert(iter.getLeft());
+			}
+			
+			if(iter.getRight()== null)
+			{
+				iter.setRight(new_node);
+				return;
+			}
+			else
+			{
+				q.insert(iter.getRight());
+			}
+		}
+			
+	}
+	
+	public void insert_display()
+	{
+		if(root == null)
+		{
+			System.out.println("Empty..");
+			return;
+		}
+		
+		BTNode iter = root;
+		BTNodeQueue q = new BTNodeQueue(25);
+		q.insert(iter);
+		
+		while(!q.isEmpty())
+		{
+			iter = q.del();
+			System.out.print(" "+iter.getData());
+			
+			if(iter.getLeft() != null)
+			{
+				q.insert(iter.getLeft());
+			}
+			if(iter.getRight() != null)
+			{
+				q.insert(iter.getRight());
+			}
+		}
+	}	
+}
+
+
+
+package class_work;
+
+public class BTNode {
+
+	private int sum = 0;
+	private int nonleafsum = 0;
+	private int data;
+	private BTNode left, right;
+	
+	public BTNode()
+	{
+		data=0;
+		left = right = null;
+	}
+	
+	public BTNode(int d)
+	{
+		data = d;
+		left = right = null;
+	}
+	
+	public int getData()
+	{
+		return data;
+	}
+	
+	public BTNode getLeft()
+	{
+		return left;
+	}
+	
+	public BTNode getRight()
+	{
+		return right;
+	}
+	
+	public void setData(int d)
+	{
+		data = d;
+	}
+	
+	public void setLeft(BTNode l)
+	{
+		left = l;
+	}
+	
+	public void setRight(BTNode l)
+	{
+		right = l;
+	}
+	
+	public void preorder(BTNode root)
+	{
+		if(root == null)
+		{
+			return;
+		}
+		
+		System.out.print(" "+root.getData());
+		preorder(root.getLeft());
+		preorder(root.getRight());
+	}
+	
+	public void inorder(BTNode root)
+	{
+		if(root == null)
+		{
+			return;
+		}
+		
+		inorder(root.getLeft());
+		System.out.print(" "+root.getData());
+		inorder(root.getRight());
+	}
+	
+	public void postorder(BTNode root)
+	{
+		if(root == null)
+		{
+			return;
+		}
+		
+		postorder(root.getLeft());
+		postorder(root.getRight());
+		System.out.print(" "+root.getData());
+	}
+	
+	public void LeafNode(BTNode root)
+	{
+		if(root == null)
+		{
+			return;
+		}
+		
+		BTNodeQueue q = new BTNodeQueue(25);
+		q.insert(root);
+		while(!q.isEmpty())
+		{
+			BTNode iter = q.del();
+			
+			if(iter.getLeft() == null && iter.getRight() == null)
+			{
+				System.out.print(" " + iter.getData());	
+			}
+			
+			if(iter.getLeft() != null)
+			{
+				q.insert(iter.getLeft());
+			}
+			
+			if(iter.getRight() != null)
+			{
+				q.insert(iter.getRight());
+			}
+		}
+	}
+	
+	public int SumOfLeafNode(BTNode root)
+	{
+		if(root == null)
+		{
+			return 0;
+		}
+		
+		int sum = 0;
+		
+		BTNodeQueue q = new BTNodeQueue(25);
+		q.insert(root);
+		while(!q.isEmpty())
+		{
+			BTNode iter = q.del();
+			
+			if(iter.getLeft() == null && iter.getRight() == null)
+			{
+				sum = sum +iter.getData();
+			}
+			
+			if(iter.getLeft() != null)
+			{
+				q.insert(iter.getLeft());
+			}
+			
+			if(iter.getRight() != null)
+			{
+				q.insert(iter.getRight());
+			}
+		}
+		return sum;
+	}
+	 
+	
+	public void NonLeafNode(BTNode root)
+	{
+		if(root == null)
+		{
+			System.out.println("Empty..");
+			return;
+		}
+		
+		BTNodeQueue q = new BTNodeQueue(25);
+		q.insert(root);
+		while(!q.isEmpty())
+		{
+			BTNode iter = q.del();
+			
+			if(iter.getLeft() != null || iter.getRight() != null)
+			{
+				System.out.print(" "+iter.getData());
+			}
+			
+			if(iter.getLeft() != null)
+	        {
+	            q.insert(iter.getLeft());
+	        }
+
+	        if(iter.getRight() != null)
+	        {
+	            q.insert(iter.getRight());
+	        }
+		}
+	}
+	
+	public int SumOfNonLeafNode(BTNode root)
+	{
+	    if(root == null)
+	    {
+	        return 0;
+	    }
+
+	    int sum = 0;
+
+	    BTNodeQueue q = new BTNodeQueue(25);
+
+	    q.insert(root);
+
+	    while(!q.isEmpty())
+	    {
+	        BTNode iter = q.del();
+
+	        if(iter.getLeft() != null || iter.getRight() != null)
+	        {
+	            sum = sum + iter.getData();
+	        }
+
+	        if(iter.getLeft() != null)
+	        {
+	            q.insert(iter.getLeft());
+	        }
+
+	        if(iter.getRight() != null)
+	        {
+	            q.insert(iter.getRight());
+	        }
+	    }
+	    return sum;
+	}
+	
+	public void MaxValue(BTNode root)
+	{
+		if(root == null)
+		{
+			return ;
+		}
+		
+		int max = root.getData();
+		
+		BTNodeQueue q = new BTNodeQueue(25);
+		q.insert(root);
+		
+		while(!q.isEmpty())
+		{
+			BTNode iter = q.del();
+			
+			if(iter.getData() > max)
+			{
+				max = iter.getData();
+			}
+			
+			if(iter.getLeft() != null)
+			{
+				q.insert(iter.getLeft());
+			}
+			
+			if(iter.getRight() != null)
+			{
+				q.insert(iter.getRight());
+			}
+		}
+		System.out.println("Maximum Value : " + max);
+	}
+	
+	
+	public void MinValue(BTNode root)
+	{
+		if(root == null)
+		{
+			return ;
+		}
+		
+		int min = root.getData();
+		
+		BTNodeQueue q = new BTNodeQueue(25);
+		q.insert(root);
+		
+		while(!q.isEmpty())
+		{
+			BTNode iter = q.del();
+			
+			if(iter.getData() < min)
+			{
+				min = iter.getData();
+			}
+			
+			if(iter.getLeft() != null)
+			{
+				q.insert(iter.getLeft());
+			}
+			
+			if(iter.getRight() != null)
+			{
+				q.insert(iter.getRight());
+			}
+		}
+		System.out.println("Minimum Value : " + min);
+	}
+	
+	public void EvenValues(BTNode root)
+	{
+		if(root == null)
+		{
+			return;
+		}
+		
+		BTNodeQueue q = new BTNodeQueue(25);
+		q.insert(root);
+		
+		while(!q.isEmpty())
+		{
+			BTNode iter = q.del();
+			
+			if(iter.getData()%2 == 0)
+			{
+				System.out.print(" "+iter.getData());
+			}
+			
+			if(iter.getLeft() != null)
+			{
+				q.insert(iter.getLeft());
+			}
+			
+			if(iter.getRight() != null)
+			{
+				q.insert(iter.getRight());
+			}
+		}
+	}
+	
+	public void OddValues(BTNode root)
+	{
+		if(root == null)
+		{
+			return;
+		}
+		
+		BTNodeQueue q = new BTNodeQueue(25);
+		q.insert(root);
+		
+		while(!q.isEmpty())
+		{
+			BTNode iter = q.del();
+			
+			if(iter.getData()%2 != 0)
+			{
+				System.out.print(" "+iter.getData());
+			}
+			
+			if(iter.getLeft() != null)
+			{
+				q.insert(iter.getLeft());
+			}
+			
+			if(iter.getRight() != null)
+			{
+				q.insert(iter.getRight());
+			}
+		}
+	}	
+}
+
+
+package class_work;
+
+public class UserOfBinaryTree {
+
+	public static void main(String args[])
+	{
+		BinaryTree bt = new BinaryTree();
+		
+		/*bt.setRoot(bt.createNode(10));
+		bt.getRoot().setLeft(bt.createNode(20));
+		bt.getRoot().setRight(bt.createNode(30));
+		bt.getRoot().getLeft().setLeft(bt.createNode(40));
+		bt.getRoot().getLeft().setRight(bt.createNode(50));
+		bt.getRoot().getRight().setLeft(bt.createNode(60));
+		bt.getRoot().getRight().setRight(bt.createNode(70));
+		
+		BTNode root = bt.getRoot();
+		
+		System.out.print("Preorder = ");
+		root.preorder(root);
+		
+		System.out.print("\n\nInorder = ");
+		root.inorder(root);
+		
+		System.out.print("\n\nPostorder = ");
+		root.postorder(root);*/
+		
+		bt.insert_levelwise(50);
+		bt.insert_levelwise(72);
+		bt.insert_levelwise(68);
+		bt.insert_levelwise(54);
+		bt.insert_levelwise(12);
+		bt.insert_levelwise(32);
+		bt.insert_levelwise(23);
+		bt.insert_levelwise(42);
+		bt.insert_levelwise(9);
+		
+		System.out.print("Level-wise Display:");
+        bt.insert_display();
+        
+        System.out.println(" ");
+        
+        System.out.println("\nPreorder : ");
+        bt.getRoot().preorder(bt.getRoot());
+        
+        System.out.println(" ");
+
+        System.out.println("\nInorder : ");
+        bt.getRoot().inorder(bt.getRoot());
+        
+        System.out.println(" ");
+
+        System.out.println("\nPostorder : ");
+        bt.getRoot().postorder(bt.getRoot());
+        
+        System.out.println(" ");
+        
+        System.out.println("\nLeaf Nodes : ");
+        bt.getRoot().LeafNode(bt.getRoot());
+        
+        System.out.println(" ");
+        
+        System.out.println("\nSum of Leaf Nodes: "+bt.getRoot().SumOfLeafNode(bt.getRoot()));
+        
+        System.out.println(" ");
+        
+        System.out.println("Non Leaf Nodes: ");
+        bt.getRoot().NonLeafNode(bt.getRoot());
+        
+        System.out.println(" ");
+        
+        System.out.println("\nSum of Non Leaf Nodes: "+bt.getRoot().SumOfNonLeafNode(bt.getRoot()));
+        
+        System.out.println(" ");
+        
+        //MaxValue
+        bt.getRoot().MaxValue(bt.getRoot());
+        
+        System.out.println(" ");
+        
+        //MinValue;
+        bt.getRoot().MinValue(bt.getRoot());
+        
+        System.out.println(" ");
+        
+        System.out.println("Even Number Nodes: ");
+        bt.getRoot().EvenValues(bt.getRoot());
+        
+        System.out.println(" ");
+        
+        System.out.println("\nOdd Number Nodes: ");
+        bt.getRoot().OddValues(bt.getRoot());
+	}
+}
+
+
+package class_work;
+
+public class BTNodeQueue {
+	
+	private BTNode arr[];
+	private int front, rear;
+	
+	public BTNodeQueue(int size)
+	{
+		arr = new BTNode[size];
+		front = rear = -1;
+	}
+	
+	public boolean isEmpty()
+	{
+		return front == -1;
+	}
+	
+	public boolean isFull()
+	{
+		return rear == arr.length-1;
+	}
+	
+	public void insert(BTNode node)
+	{
+		if(isFull())
+		{
+			System.out.println("Queue Full");
+			return;
+		}
+		
+		if(front == -1)
+		{
+			front = 0;
+		}
+		
+		rear ++;
+		
+		arr[rear] = node;
+	}
+	
+	public BTNode del()
+	{
+		if(isEmpty())
+		{
+			return null;
+		}
+		
+		BTNode temp = arr[front];
+		
+		if(front == rear)
+		{
+			front = rear = -1;
+		}
+		else
+		{
+			front++;
+		}
+		
+		return temp;
+	}
+
+}
