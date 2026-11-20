@@ -1,0 +1,475 @@
+//package dsa_day_02;
+
+public class IntNode {
+
+	private int data;
+	private IntNode next;
+	
+	public IntNode()
+	{
+		data = 0;
+		next = null;
+	}
+	
+	public IntNode(int d)
+	{
+		data = d;
+		next = null;
+	}
+	
+	public void setData(int d)
+	{
+		data = d;
+	}
+	
+	public int getData()
+	{
+		return data;
+	}
+	
+	public void setNext(IntNode n)
+	{
+		next = n;
+	}
+	
+	public IntNode getNext()
+	{
+		return next;
+	}
+}
+
+
+package dsa_day_02;
+
+public class LinkedList {
+
+	private IntNode head; 
+	
+	public LinkedList()
+	{
+		head = null;
+	}
+	
+	public void setHead(IntNode h)
+	{
+		head = h;
+	}
+	
+	public IntNode getHead()
+	{
+		return head;
+	}
+	
+	public void insertLast(int d)  //// Insert Last
+	{
+		IntNode new_node = new IntNode(d);
+		
+		if(head == null)
+		{
+			head = new_node;
+			return;
+		}
+		
+		IntNode iter = head;
+		
+		while(iter.getNext() != null)
+		{
+			iter = iter.getNext();
+		}
+		iter.setNext(new_node);
+		return;
+	}
+	
+	public void insertFirst(int d)   //// Insert First
+	{
+        IntNode new_node = new IntNode(d);
+	
+		if(head == null)
+		{
+			head = new_node;
+			return;
+		}
+		
+		new_node.setNext(head);
+		head = new_node;
+		return;
+	}
+	
+	public void insertByPos(int d, int pos)  //// Insert By Position...
+	{
+		IntNode new_node = new IntNode(d);
+		
+		if(head == null)
+		{
+			head = new_node;
+			return;
+		}
+		
+		if(pos == 1)
+		{
+			insertFirst(d);
+			return ;
+		}
+		
+		IntNode iter = head;
+		
+		for(int i=1; i<pos-1 && iter.getNext() != null; i++)
+		{
+			iter = iter.getNext();
+		}
+		
+		new_node.setNext(iter.getNext());
+		iter.setNext(new_node);
+		return;
+	}
+	
+	public void insertBefore(int d, int before) //// Insert Before Data 
+	{
+		IntNode new_node = new IntNode(d);
+		if(head == null)
+		{
+			System.out.println("List Is Empty");
+			return;
+		}
+		
+		if(head.getData() == before)
+		{
+			insertFirst(d);
+			return;
+		}
+		
+		IntNode iter = head;
+		
+		while((iter.getNext()!= null) && (iter.getNext().getData()!= before))
+		{
+			iter = iter.getNext();
+		}
+		if(iter.getNext() == null) 
+		{
+			System.out.println("Data Not Found");
+			return;
+		}
+		new_node.setNext(iter.getNext());
+		iter.setNext(new_node);
+	}
+	
+	public void insertAfter(int d, int after)  //// Insert After Data
+	{
+		IntNode new_node = new IntNode(d);
+		
+		if(head == null)
+		{
+			System.out.println("\nList is Empty");
+			return ;
+		}
+		
+		if(head.getData() == after)
+		{
+		    new_node.setNext(head.getNext());
+			head.setNext(new_node);
+			return;
+		}
+		
+		IntNode iter = head;
+		
+		while((iter.getNext() != null) && (iter.getNext().getData() != after))
+		{
+			iter = iter.getNext();
+		}
+		
+		if(iter.getNext() == null)
+		{
+			System.out.println("Data Not Found");
+			return;
+		}
+		
+		new_node.setNext(iter.getNext().getNext());
+		iter.getNext().setNext(new_node);
+	}
+	
+	
+	public int deleteFirst()  //// Delete First....
+	{
+		if(head == null)
+	    {
+	        System.out.println("\nList is Empty..");
+	        return -999;
+	    }
+		IntNode deletable = head;
+		//int d = head.getData();
+		head = head.getNext();
+		
+		deletable.setNext(null);
+		deletable = null;
+		return -999;
+	}
+	
+	public int deleteLast()  //// Delete Last....
+	{
+		if(head==null)
+		{
+			System.out.println("\nList is Empty..");
+			return -999;
+		}
+		
+		if(head.getNext() == null)
+		{
+			int d = head.getData();
+			head = null;
+			return d;
+		}
+		
+		IntNode iter = head;
+		int d;
+		while(iter.getNext().getNext() != null)
+		{
+			iter = iter.getNext();
+		}
+		d = iter.getNext().getData();
+		iter.setNext(null);
+		return d;	
+	}
+	
+	public int deletebyPos(int pos)  //// Delete By Position
+	{
+		if(head == null)
+		{
+			System.out.println("\nList is Empty");
+			return -999;
+		}
+		
+		if(pos == 1)
+		{
+			return deleteFirst();
+		}
+		
+		IntNode deletable;
+		IntNode iter = head;
+		int d;
+		
+		for(int i=1; i<pos-1 && iter.getNext() != null; i++)
+		{
+			iter = iter.getNext();
+		}
+		
+		if(iter.getNext() != null)
+		{
+			deletable = iter.getNext();
+			iter.setNext(deletable.getNext());
+			d = deletable.getData();
+			deletable.setNext(null);
+			deletable = null;
+			return d;
+		}
+		System.out.println("Invalid Position..");
+		return -999;
+	}
+	
+	public int deleteByData(int data)  //// Delete By Data
+	{
+		if(head == null)
+		{
+			System.out.println("\nList is Empty");
+			return -999;
+		}
+		
+		if(head.getData() == data)
+		{
+			return deleteFirst();
+		}
+		
+		IntNode iter = head;
+		IntNode deletable;
+		int d;
+		
+		while(iter.getNext() != null && iter.getNext().getData() != data);
+		{
+			iter = iter.getNext();
+		}
+		
+		if(iter.getNext() == null)
+		{
+			System.out.println("Data Not Found..");
+			return -999;
+		}
+		
+		deletable = iter.getNext();
+		iter.setNext(deletable.getNext());
+		d = deletable.getData();
+		deletable.setNext(null);
+		deletable = null;
+		
+		return d;
+	}
+	
+	public void reverse()  //// Reverse  
+	{
+		IntNode curr, prev, next;
+		prev = null;
+		curr = head;
+		
+		while(curr != null)
+		{
+			next = curr.getNext();
+			curr.setNext(prev);
+			prev = curr;
+			curr = next;
+		}
+		
+		head = prev;
+	}
+		
+	public void display()
+	{
+		if(head == null)
+		{
+			System.out.println("\nList is Empty..");
+			return;
+		}
+		
+		IntNode iter = head;
+		//System.out.println(head + " ");
+		while(iter != null)
+		{
+			System.out.print(iter.getData()+" -> ");
+			iter = iter.getNext();
+		}
+		return;	
+	}
+}
+
+
+package dsa_day_02;
+
+import java.util.Scanner;
+
+public class UserOfLL
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        LinkedList ll = new LinkedList();
+
+        int choice, d, pos, data;
+
+        do
+        {
+            System.out.println("\n========== LINKED LIST MENU ==========");
+            System.out.println("1. Insert First");
+            System.out.println("2. Insert Last");
+            System.out.println("3. Insert By Position");
+            System.out.println("4. Insert Before Data");
+            System.out.println("5. Insert After Data");
+            System.out.println("6. Delete First");
+            System.out.println("7. Delete By Position");
+            System.out.println("8. Delete By Data");
+            System.out.println("9. Display");
+            System.out.println("10. Reverse");
+            System.out.println("0. Exit");
+            System.out.println("======================================");
+
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch(choice)
+            {
+                case 1:
+                    System.out.print("Enter data: ");
+                    d = sc.nextInt();
+
+                    ll.insertFirst(d);
+                    break;
+
+                case 2:
+                    System.out.print("Enter data: ");
+                    d = sc.nextInt();
+
+                    ll.insertLast(d);
+                    break;
+
+                case 3:
+                    System.out.print("Enter data: ");
+                    d = sc.nextInt();
+
+                    System.out.print("Enter position: ");
+                    pos = sc.nextInt();
+
+                    ll.insertByPos(d, pos);
+                    break;
+
+                case 4:
+                    System.out.print("Enter data to insert: ");
+                    d = sc.nextInt();
+
+                    System.out.print("Insert before which data: ");
+                    data = sc.nextInt();
+
+                    ll.insertBefore(d, data);
+                    break;
+
+                case 5:
+                    System.out.print("Enter data to insert: ");
+                    d = sc.nextInt();
+
+                    System.out.print("Insert after which data: ");
+                    data = sc.nextInt();
+
+                    ll.insertAfter(d, data);
+                    break;
+
+                case 6:
+                    d = ll.deleteFirst();
+
+                    if(d != -999)
+                    {
+                        System.out.println("Deleted data: " + d);
+                    }
+                    break;
+
+                case 7:
+                    System.out.print("Enter position to delete: ");
+                    pos = sc.nextInt();
+
+                    d = ll.deletebyPos(pos);
+
+                    if(d != -999)
+                    {
+                        System.out.println("Deleted data: " + d);
+                    }
+                    break;
+
+                case 8:
+                    System.out.print("Enter data to delete: ");
+                    data = sc.nextInt();
+
+                    d = ll.deleteByData(data);
+
+                    if(d != -999)
+                    {
+                        System.out.println("Deleted data: " + d);
+                    }
+                    break;
+
+                case 9:
+                    ll.display();
+                    break;
+
+                case 10:
+                    ll.reverse();
+                    System.out.println("Linked List Reversed.");
+                    break;
+
+                case 11:
+                    System.out.println("Program Ended...");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+
+        } while(choice != 11);
+
+        sc.close();
+    }
+}
